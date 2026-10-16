@@ -1,0 +1,35 @@
+{
+  "posts": [
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200
+    },
+    {
+      "id": "3",
+      "title": "New title for id 3",
+      "views": 200
+    },
+    {
+      "title": "another another another title",
+      "views": 300,
+      "id": "t-ldtGrj2Ts"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": null
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": null
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "$schema": "./node_modules/json-server/schema.json"
+}
