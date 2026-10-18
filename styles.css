@@ -1,5 +1,248 @@
+/* =====================================================================
+   Tokens
+   ===================================================================== */
+:root {
+    --font-display: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --font-text: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+    --ink: #16181d;
+    --body: #3f4650;
+    --muted: #737d8a;
+    --rule: #e6e9ed;
+    --rule-soft: #f1f3f6;
+    --focus: #1d4ed8;
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+body {
+    margin: 0;
+    padding: 48px 24px;
+    font-family: var(--font-text);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--body);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Caps the measure so list rows stay under ~80 characters */
+form {
+    max-width: 720px;
+}
+
+/* 500, not 600: Franklin Gothic Medium already carries its own weight and a
+   bolder value makes the browser synthesise a faux-bold on the large size */
 .title {
-    font-size: 50px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    justify-self: center;
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin: 0 0 44px;
+}
+
+/* =====================================================================
+   Section labels — "Read data:", "Update data:", and so on
+   ===================================================================== */
+form > p {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+}
+
+/* =====================================================================
+   Text input
+   ===================================================================== */
+input[type="text"] {
+    font: inherit;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    min-width: 300px;
+    padding: 9px 12px;
+    border: 1px solid #d7dce2;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+input[type="text"]::placeholder {
+    color: #9aa3ae;
+}
+
+input[type="text"]:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+    border-color: var(--focus);
+}
+
+input[type="number"] {
+    font: inherit;
+    font-size: 0.9375rem;
+    color: var(--ink);
+    min-width: 300px;
+    padding: 9px 12px;
+    border: 1px solid #d7dce2;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+input[type="number"]::placeholder {
+    color: #9aa3ae;
+}
+
+input[type="number"]:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 1px;
+    border-color: var(--focus);
+}
+
+/* =====================================================================
+   Lists
+   ===================================================================== */
+#rdata,
+#Udata,
+#ddata {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Flex lets the row's action button sit in a consistent right-hand column,
+   which is why the marker is drawn by hand below */
+#rdata li,
+#Udata li,
+#ddata li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 0.9375rem;
+    color: var(--ink);
+}
+
+#rdata li::before,
+#Udata li::before,
+#ddata li::before {
+    content: "";
+    flex: none;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c3cad3;
+}
+
+/* No <li> means the fetch failed — the <ul> holds only a text node */
+#rdata:not(:has(li)),
+#Udata:not(:has(li)),
+#ddata:not(:has(li)) {
+    font-size: 0.875rem;
+    color: var(--muted);
+}
+
+/* =====================================================================
+   Buttons
+   ===================================================================== */
+
+/* Shared shape for every action button. The trigger buttons in index.html are
+   matched by id so this needs no HTML changes. */
+.entry-btn,
+#get-values,
+#get-values-update,
+#get-values-delete,
+#Cbutton {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 7px 13px;
+    border: 0;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: filter 120ms ease, transform 80ms ease;
+}
+
+/* Row buttons are pushed to the right edge; the form triggers stay inline */
+.entry-btn {
+    margin: 0 0 0 auto;
+}
+
+#get-values,
+#get-values-update,
+#get-values-delete,
+#Cbutton {
+    margin: 12px 0;
+}
+
+/* Darken on hover instead of lightening: it reads on every hue, and it pushes
+   contrast with the white label up rather than down */
+.entry-btn:hover,
+#get-values:hover,
+#get-values-update:hover,
+#get-values-delete:hover,
+#Cbutton:hover {
+    filter: brightness(0.9);
+}
+
+.entry-btn:active,
+#get-values:active,
+#get-values-update:active,
+#get-values-delete:active,
+#Cbutton:active {
+    transform: translateY(1px);
+}
+
+/* Keyboard focus ring — pointer focus stays clean */
+.entry-btn:focus-visible,
+#get-values:focus-visible,
+#get-values-update:focus-visible,
+#get-values-delete:focus-visible,
+#Cbutton:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+}
+
+/* Read: blue. Purely a fetch, nothing can be lost */
+.entry-btn--read,
+#get-values {
+    background-color: #1d4ed8;
+}
+
+/* Update: orange. It overwrites the stored title, so it carries the same
+   warning as delete — just less severe */
+.entry-btn--update,
+#get-values-update {
+    background-color: #c2410c;
+}
+
+/* Delete: crimson, the most destructive of the three */
+.entry-btn--delete,
+#get-values-delete {
+    background-color: #be123c;
+}
+
+/* Create: green. The one action that adds rather than threatens */
+#Cbutton {
+    background-color: #15803d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .entry-btn,
+    #get-values,
+    #get-values-update,
+    #get-values-delete,
+    #Cbutton {
+        transition: none;
+    }
 }

@@ -31,10 +31,32 @@ document.querySelector("#get-values-delete").addEventListener("click", async () 
             button.textContent = "Delete entry"
             button.type = "submit"
             button.id = "delbtn"
-            button.style.backgroundColor = "red"
-            button.style.color = "white";
-            button.style.padding = "8px 12px";
-            button.style.margin = "20px"
+            button.className = "entry-btn entry-btn--delete";
+            li.textContent = `${post.title} - ${post.views} views`
+            ul.appendChild(li)
+            li.appendChild(button)
+        }
+    } catch (error) {
+        console.error(error);
+        ul.textContent = "Could not load the posts";
+    }
+
+})
+
+document.querySelector("#get-values-update").addEventListener("click", async () => {
+    const ul = document.querySelector("#Udata");
+
+    try {
+        const posts = await getPosts()
+        ul.replaceChildren();
+
+        for (const post of posts) {
+            const li = document.createElement("li");
+            const button = document.createElement("button");
+            button.textContent = "Update entry"
+            button.type = "submit"
+            button.id = "Upbtn"
+            button.className = "entry-btn entry-btn--update";
             li.textContent = `${post.title} - ${post.views} views`
             ul.appendChild(li)
             li.appendChild(button)
