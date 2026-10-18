@@ -1,5 +1,24 @@
-import { getPosts } from "./crud.js";
+import { getPosts, createPost, deletePost, updatePost } from "./crud.js";
 
+function createdata() {
+    document.querySelector("#Cbutton").addEventListener("click", async () => {
+        const title = document.getElementById("Ctitle").value;
+        const views = Number(document.getElementById("Cviews").value) || 0;
+
+        try {
+            const post = await createPost({ title, views});
+            console.log(post)
+        } catch (error){
+            console.error(error)
+        }
+    })
+}
+createdata()
+
+function deletedata() {
+
+}
+//#region  Read
 document.querySelector("#get-values").addEventListener("click", async () => {
     const ul = document.querySelector("#rdata");
 
@@ -17,7 +36,9 @@ document.querySelector("#get-values").addEventListener("click", async () => {
         ul.textContent = "Could not load posts.";
     }
 });
+//#endregion
 
+//#region Delete
 document.querySelector("#get-values-delete").addEventListener("click", async () => {
     const ul = document.querySelector("#ddata");
 
@@ -29,7 +50,7 @@ document.querySelector("#get-values-delete").addEventListener("click", async () 
             const li = document.createElement("li");
             const button = document.createElement("button");
             button.textContent = "Delete entry"
-            button.type = "submit"
+            button.type = "button"
             button.id = "delbtn"
             button.className = "entry-btn entry-btn--delete";
             li.textContent = `${post.title} - ${post.views} views`
@@ -42,7 +63,9 @@ document.querySelector("#get-values-delete").addEventListener("click", async () 
     }
 
 })
+//#endregion
 
+//#region Update
 document.querySelector("#get-values-update").addEventListener("click", async () => {
     const ul = document.querySelector("#Udata");
 
@@ -54,7 +77,7 @@ document.querySelector("#get-values-update").addEventListener("click", async () 
             const li = document.createElement("li");
             const button = document.createElement("button");
             button.textContent = "Update entry"
-            button.type = "submit"
+            button.type = "button"
             button.id = "Upbtn"
             button.className = "entry-btn entry-btn--update";
             li.textContent = `${post.title} - ${post.views} views`
@@ -66,4 +89,7 @@ document.querySelector("#get-values-update").addEventListener("click", async () 
         ul.textContent = "Could not load the posts";
     }
 
+
 })
+
+//#endregion
