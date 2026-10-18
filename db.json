@@ -1,29 +1,9 @@
 {
   "posts": [
     {
-      "id": "1",
-      "title": "title 1",
-      "views": 200
-    },
-    {
-      "id": "2",
-      "title": "another title",
-      "views": 200
-    },
-    {
-      "id": "3",
-      "title": "title for id 3",
-      "views": 200
-    },
-    {
-      "id": "4",
       "title": "test",
-      "views": 500
-    },
-    {
-      "title": "test",
-      "views": 1,
-      "id": "CRCax9v5MHo"
+      "views": 500,
+      "id": "EL4XhAGbYT0"
     }
   ],
   "comments": [

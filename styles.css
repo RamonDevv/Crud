@@ -1,16 +1,28 @@
 /* =====================================================================
    Tokens
+   ---------------------------------------------------------------------
+   Dark surface. The four operation colours are stored as three custom
+   properties (fill / text / edge) so a button and its section marker can
+   share one definition.
    ===================================================================== */
 :root {
     --font-display: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     --font-text: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
-    --ink: #16181d;
-    --body: #3f4650;
-    --muted: #737d8a;
-    --rule: #e6e9ed;
-    --rule-soft: #f1f3f6;
-    --focus: #1d4ed8;
+    --page: #0f1216;
+    --raised: #171d25;
+    --raised-hi: #1e2630;
+    --rule: #232b35;
+    --rule-soft: #1a212a;
+    --ink: #e6edf3;
+    --body: #9aa7b4;
+    --muted: #848f9b;
+    --focus: #58a6ff;
+
+    /* Fallback for any action button with no role assigned */
+    --fill: #171d25;
+    --text: #e6edf3;
+    --edge: #2f3842;
 }
 
 /* =====================================================================
@@ -18,85 +30,146 @@
    ===================================================================== */
 body {
     margin: 0;
-    padding: 48px 24px;
+    min-height: 100vh;
+    padding: 52px 24px;
     font-family: var(--font-text);
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.55;
     color: var(--body);
-    background: #ffffff;
+    background: var(--page);
     -webkit-font-smoothing: antialiased;
 }
 
-/* Caps the measure so list rows stay under ~80 characters */
-form {
-    max-width: 720px;
+::selection {
+    background: #2b4a6f;
+    color: #ffffff;
 }
 
-/* 500, not 600: Franklin Gothic Medium already carries its own weight and a
-   bolder value makes the browser synthesise a faux-bold on the large size */
+/* Caps the measure so record rows stay under ~80 characters */
+form {
+    max-width: 780px;
+}
+
 .title {
     font-family: var(--font-display);
-    font-size: 2.25rem;
+    font-size: 2rem;
     font-weight: 500;
     line-height: 1.15;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
     color: var(--ink);
-    margin: 0 0 44px;
+    margin: 0 0 48px;
 }
 
 /* =====================================================================
-   Section labels — "Read data:", "Update data:", and so on
+   Section markers
+   ---------------------------------------------------------------------
+   CRUD is a sequence, so each section carries its protocol letter in its
+   own operation colour. This is the one structural flourish on the page.
    ===================================================================== */
+.entry-btn--read,
+#get-values {
+    --fill: #131f2f;
+    --text: #73a6e8;
+    --edge: #3b6db0;
+}
+
+.entry-btn--update,
+#get-values-update {
+    --fill: #2f2513;
+    --text: #e8bd73;
+    --edge: #b0853b;
+}
+
+.entry-btn--delete,
+#get-values-delete {
+    --fill: #2f1314;
+    --text: #e87377;
+    --edge: #b03b3f;
+}
+
+#Cbutton {
+    --fill: #132f1f;
+    --text: #73e8a4;
+    --edge: #3bb06c;
+}
+
 form > p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-family: var(--font-display);
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 600;
+    letter-spacing: 0.03em;
+    /* Normalises "Read data:" to "Read Data:" to match the create label */
+    text-transform: capitalize;
     color: var(--ink);
-    margin: 36px 0 12px;
-    padding-bottom: 8px;
+    margin: 36px 0 14px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--rule);
 }
 
-/* =====================================================================
-   Text input
-   ===================================================================== */
-input[type="text"] {
-    font: inherit;
-    font-size: 0.9375rem;
-    color: var(--ink);
-    min-width: 300px;
-    padding: 9px 12px;
-    border: 1px solid #d7dce2;
+form > p::before {
+    content: "";
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
-    background: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--fill);
+    color: var(--text);
+    border: 1px solid var(--edge);
 }
 
-input[type="text"]::placeholder {
-    color: #9aa3ae;
+form > p:first-of-type::before {
+    content: "C";
 }
 
-input[type="text"]:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 1px;
-    border-color: var(--focus);
+.Rdata::before {
+    content: "R";
 }
 
+.Udata::before {
+    content: "U";
+}
+
+.Ddata::before {
+    content: "D";
+}
+
+/* =====================================================================
+   Inputs
+   ===================================================================== */
+input[type="text"],
 input[type="number"] {
     font: inherit;
     font-size: 0.9375rem;
     color: var(--ink);
-    min-width: 300px;
     padding: 9px 12px;
-    border: 1px solid #d7dce2;
+    border: 1px solid #2a323c;
     border-radius: 4px;
-    background: #ffffff;
+    background: var(--raised);
+    transition: border-color 120ms ease;
 }
 
-input[type="number"]::placeholder {
-    color: #9aa3ae;
+input[type="text"] {
+    width: 100%;
+    max-width: 320px;
 }
 
-input[type="number"]:focus-visible {
+input[type="number"] {
+    width: 130px;
+}
+
+input::placeholder {
+    color: #5a6672;
+}
+
+input:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 1px;
     border-color: var(--focus);
@@ -113,14 +186,12 @@ input[type="number"]:focus-visible {
     padding: 0;
 }
 
-/* Flex lets the row's action button sit in a consistent right-hand column,
-   which is why the marker is drawn by hand below */
 #rdata li,
 #Udata li,
 #ddata li {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     padding: 11px 0;
     border-bottom: 1px solid var(--rule-soft);
     font-size: 0.9375rem;
@@ -135,7 +206,42 @@ input[type="number"]:focus-visible {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #c3cad3;
+    background: #4a5765;
+}
+
+/* Delete rows: label then action on the far edge */
+#ddata li .entry-btn {
+    margin-left: auto;
+}
+
+/* Update rows carry an inline editor. The zero-height ::after forces a wrap so
+   the record label sits alone on line one and the editor on line two. */
+#Udata li {
+    flex-wrap: wrap;
+}
+
+#Udata li::after {
+    content: "";
+    order: 1;
+    flex-basis: 100%;
+    height: 0;
+}
+
+#Udata li input,
+#Udata li .entry-btn {
+    order: 2;
+}
+
+#Udata li input[type="text"] {
+    flex: 1 1 170px;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+}
+
+#Udata li input[type="number"] {
+    flex: none;
+    width: 96px;
 }
 
 /* No <li> means the fetch failed — the <ul> holds only a text node */
@@ -149,9 +255,6 @@ input[type="number"]:focus-visible {
 /* =====================================================================
    Buttons
    ===================================================================== */
-
-/* Shared shape for every action button. The trigger buttons in index.html are
-   matched by id so this needs no HTML changes. */
 .entry-btn,
 #get-values,
 #get-values-update,
@@ -165,33 +268,22 @@ input[type="number"]:focus-visible {
     font-weight: 600;
     letter-spacing: 0.01em;
     padding: 7px 13px;
-    border: 0;
+    border: 1px solid var(--edge);
     border-radius: 4px;
-    color: #ffffff;
+    background: var(--fill);
+    color: var(--text);
     cursor: pointer;
     transition: filter 120ms ease, transform 80ms ease;
 }
 
-/* Row buttons are pushed to the right edge; the form triggers stay inline */
-.entry-btn {
-    margin: 0 0 0 auto;
-}
-
-#get-values,
-#get-values-update,
-#get-values-delete,
-#Cbutton {
-    margin: 12px 0;
-}
-
-/* Darken on hover instead of lightening: it reads on every hue, and it pushes
-   contrast with the white label up rather than down */
+/* On a dark surface the hover moves the other way: lighten, so the control
+   comes forward instead of receding into the page */
 .entry-btn:hover,
 #get-values:hover,
 #get-values-update:hover,
 #get-values-delete:hover,
 #Cbutton:hover {
-    filter: brightness(0.9);
+    filter: brightness(1.22);
 }
 
 .entry-btn:active,
@@ -202,38 +294,51 @@ input[type="number"]:focus-visible {
     transform: translateY(1px);
 }
 
-/* Keyboard focus ring — pointer focus stays clean */
 .entry-btn:focus-visible,
 #get-values:focus-visible,
 #get-values-update:focus-visible,
 #get-values-delete:focus-visible,
 #Cbutton:focus-visible {
-    outline: 2px solid var(--ink);
+    outline: 2px solid var(--focus);
     outline-offset: 2px;
 }
 
-/* Read: blue. Purely a fetch, nothing can be lost */
-.entry-btn--read,
-#get-values {
-    background-color: #1d4ed8;
-}
-
-/* Update: orange. It overwrites the stored title, so it carries the same
-   warning as delete — just less severe */
-.entry-btn--update,
-#get-values-update {
-    background-color: #c2410c;
-}
-
-/* Delete: crimson, the most destructive of the three */
-.entry-btn--delete,
-#get-values-delete {
-    background-color: #be123c;
-}
-
-/* Create: green. The one action that adds rather than threatens */
+#get-values,
+#get-values-update,
+#get-values-delete,
 #Cbutton {
-    background-color: #15803d;
+    margin: 12px 0;
+}
+
+/* =====================================================================
+   Narrow screens
+   ===================================================================== */
+@media (max-width: 640px) {
+    body {
+        padding: 32px 16px;
+    }
+
+    .title {
+        font-size: 1.625rem;
+        margin-bottom: 36px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        max-width: none;
+        width: 100%;
+    }
+
+    #Udata li input[type="text"],
+    #Udata li input[type="number"] {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .entry-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -242,7 +347,9 @@ input[type="number"]:focus-visible {
     #get-values,
     #get-values-update,
     #get-values-delete,
-    #Cbutton {
+    #Cbutton,
+    input[type="text"],
+    input[type="number"] {
         transition: none;
     }
 }
