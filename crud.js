@@ -1,49 +1,57 @@
-const db = "http://localhost:3000/posts";
+const API_URL = "http://localhost:3000/posts";
 
-async function main() {
+/**
+ * Shared fetch layer. Builds the URL, sends JSON and throws on any non-2xx
+ * response so every CRUD function below can `await` without checking `ok`.
+ */
+async function request(path = "", options = {}) {
+  const response = await fetch(`${API_URL}${path}`, {
+    headers: { "Content-Type": "application/json" },
+    ...options
+  });
+
+  if (!response.ok) {
+    throw new Error(`${options.method || "GET"} ${path || "/"} failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.status === 204 ? null : response.json();
+}
+
+// CREATE -> POST /posts
+export function createPost({ title, views = 0 }) {
+  if (!title) throw new Error("createPost: a title is required");
+  return request("", { method: "POST", body: JSON.stringify({ title, views }) });
+}
+
+// READ -> GET /posts  (all) or GET /posts/:id  (one)
+export function getPosts() {
+  return request();
+}
+
+export function getPost(id) {
+  return request(`/${id}`);
+}
+
+// UPDATE -> PUT /posts/:id
+export function updatePost(id, changes) {
+  return request(`/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ id, ...changes })
+  });
+}
+
+// DELETE -> DELETE /posts/:id
+export function deletePost(id) {
+  return request(`/${id}`, { method: "DELETE" });
+}
+
+// Smoke test so you can confirm the server is up. Delete this once your
+// frontend has its own init.
+export async function main() {
   try {
-    const createdResponse = await fetch(db, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: "another another another title",
-        views: 300
-      })
-    });
-
-    if (!createdResponse.ok) throw new Error(`POST failed: ${createdResponse.status}`);
-    const created = await createdResponse.json();
-
-    const updatedResponse = await fetch(`${db}/3`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: "3",
-        title: "New title for id 3",
-        views: 200
-      })
-    });
-
-    if (!updatedResponse.ok) throw new Error(`PUT failed: ${updatedResponse.status}`);
-    const updated = await updatedResponse.json();
-
-    const deleteResponse = await fetch(`${db}/1`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-
-      })
-    });
-
-    if(!deleteResponse.ok) throw new Error(`DELETE failed: ${deleteResponse.status}`);
-    const deleted = await deleteResponse.json();
-
-    console.log("Created:", created.id);
-    console.log("Updated:", updated);
-    console.log("Delete:", deleted)
+    console.table(await getPosts());
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(error.message);
   }
 }
 
-main();

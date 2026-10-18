@@ -1,19 +1,24 @@
 {
   "posts": [
     {
+      "id": "1",
+      "title": "title 1",
+      "views": 200
+    },
+    {
       "id": "2",
       "title": "another title",
       "views": 200
     },
     {
       "id": "3",
-      "title": "New title for id 3",
+      "title": "title for id 3",
       "views": 200
     },
     {
-      "title": "another another another title",
-      "views": 300,
-      "id": "t-ldtGrj2Ts"
+      "id": "4",
+      "title": "test",
+      "views": 500
     }
   ],
   "comments": [

@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="crud.js">
+        import { getPosts } from "./crud.js";
+    </script>
     <title>CRUD without frameworks</title>
 </head>
-<body>
 
+<body>
+    <h1 class="title"> CRUD with plain js</h1>
+    <div>
+        <form>
+            <p>
+                Create Data:
+            </p>
+            <input type="text" placeholder="Create data:">
+            <p class="Rdata">
+                Read data:
+            </p>
+            <button type="button" id="get-values">get the values</button>
+            <script type="module" src="./app.js"></script>
+            <ul id="rdata">
+
+            </ul>
+            <p class="Udata">
+                Update data:
+            </p>
+            <p class="Ddata">
+                Delete data:
+            </p>
+            <button type="button" id="get-values-delete">get the delete entries</button>
+            <script type="module" src="./app.js"></script>
+            <ul id="ddata">
+
+            </ul>
+        </form>
+    </div>
 </body>
+
 </html>
